@@ -81,83 +81,90 @@ export default {
     },
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+$background_10percent: color-mix(in oklab, var(--background), white 10%);
+
+@mixin transparent_noBorder_noOutline {
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
 .note {
-    background-color: color-mix(in oklab, var(--background), white 10%);
+    background-color: $background_10percent;
     border-radius: 12px;
     width: 80vw;
     padding: 16px;
     height: 80dvh;
-}
 
-.note__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2em;
-    position: relative;
-}
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2em;
+        position: relative;
 
-.note__title {
-    background-color: transparent;
-    border: 0;
-    outline: 0;
-    font-size: 1.6em;
-    font-weight: bold;
-    width: 100%;
-}
+        &::after {
+            content: '';
+            width: 100%;
+            height: 2px;
+            background-color: var(--text);
+            opacity: 40%;
+            position: absolute;
+            bottom: -1em;
+            left: 0;
+        }
+    }
 
-.note__header::after {
-    content: '';
-    width: 100%;
-    height: 2px;
-    background-color: var(--text);
-    opacity: 40%;
-    position: absolute;
-    bottom: -1em;
-    left: 0;
-}
+    &__title {
+        @include transparent_noBorder_noOutline();
 
-.note__navigations {
-    margin-bottom: 2em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center
-}
+        font-size: 1.6em;
+        font-weight: bold;
+        width: 100%;
+    }
 
-.note__navigations input {
-    border: 0;
-    width: 20px;
-    background-color: transparent;
-}
+    &__navigations {
+        margin-bottom: 2em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-.note__close-button,
-.note__delete-button {
-    background-color: transparent;
-    border: 0;
-    cursor: pointer;
-}
+        input {
+            @include transparent_noBorder_noOutline();
 
-.note__close-button i {
-    font-size: 3.5em;
-}
+            width: 20px;
+        }
+    }
 
-.note__delete-button i {
-    font-size: 2em;
-}
+    &__close-button {
+        @include transparent_noBorder_noOutline();
 
-.note__date {
-    user-select: none;
-}
+        cursor: pointer;
 
-.note__content {
-    font-size: 1.3em;
-    background-color: transparent;
-    width: 100%;
-    height: 100%;
-    outline: 0;
-    border: none;
-    overflow: hidden;
-    resize: none;
+        i {
+            font-size: 3.5rem;
+        }
+    }
+
+    &__delete-button {
+        @include transparent_noBorder_noOutline();
+
+        cursor: pointer;
+
+        i {
+            font-size: 2rem;
+        }
+    }
+
+    &__content {
+        @include transparent_noBorder_noOutline();
+
+        font-size: 1.3em;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        resize: none;
+    }
 }
 </style>

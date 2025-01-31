@@ -73,7 +73,7 @@ export default {
 .menu {
     display: grid;
     grid-template-columns: 300px 1fr;
-    gap: 32px;
+    gap: 2vw;
     overflow: hidden;
     background-color: color-mix(in oklab, var(--background), white 10%);
     padding: 16px;

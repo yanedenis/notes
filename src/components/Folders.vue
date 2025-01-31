@@ -5,7 +5,7 @@
             <div className="folders__folder" v-for="(folder) in folders" :key="folder.id">
                 <details>
                     <summary>{{ folder.name }}</summary>
-                    <div className="file file--in-folder" v-for="(note) in notes"
+                    <div className="folders__file folders__file--in-folder" v-for="(note) in notes"
                         v-show="note.folder_id === folder.id" @click="openNote(note.id)">
                         <i class='bx bxs-note'></i>
                         <h4 v-if="(note.title)">{{ note.title }}</h4>
@@ -70,11 +70,7 @@ export default {
 }
 </script>
 
-<style scoped>
-.active {
-    display: block;
-}
-
+<style scoped lang="scss">
 h1 {
     font-size: 2em;
     margin-top: 20px;
@@ -114,7 +110,7 @@ section > div {
     outline: none;
 }
 
-.file {
+.folders__file {
     /* margin-top: 6px; */
     display: flex;
     align-items: center;
@@ -123,7 +119,7 @@ section > div {
     font-size: 1em;
 }
 
-.file--in-folder {
+.folders__file--in-folder {
     padding: .2rem;
     background-color: color-mix(in oklab, var(--background), white 2%);
     margin: .3rem 0 0 1rem;

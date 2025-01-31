@@ -41,7 +41,7 @@ export default {
         },
         async fetchNotes() {
             try {
-                const response = await axios.get('http://localhost:3000/api/notes');
+                const response = await axios.get('http://localhost:3000/notes');
                 console.log("Received notes: ", response.data)
                 this.notes = response.data;
             } catch(err) {

@@ -22,7 +22,7 @@ export const pool = new Pool({
 
 
 // Notes endpoints
-app.get('/api/notes', async (req, res) => {
+app.get('/notes', async (req, res) => {
     try {
         const result = await getNotes();
         res.json(result);
@@ -32,7 +32,7 @@ app.get('/api/notes', async (req, res) => {
     }
 });
 
-app.post('/api/notes', async (req, res) => {
+app.post('/notes', async (req, res) => {
     const { title, text, folder_id } = req.body;
     console.log("\nNote for post", req.body)
     try {
@@ -44,7 +44,7 @@ app.post('/api/notes', async (req, res) => {
     }
 });
 
-app.put('/api/notes', async (req, res) => {
+app.put('/notes', async (req, res) => {
     const { id, title, text } = req.body;
     console.log('\nNote for put:', req.body);
     if (!title && !text) {
@@ -59,7 +59,7 @@ app.put('/api/notes', async (req, res) => {
     }
 });
 
-app.delete('/api/notes/:id', async (req, res) => {
+app.delete('/notes/:id', async (req, res) => {
     const { id } = req.params;
     console.log('\nDeleting note:', id);
     try {
@@ -73,7 +73,7 @@ app.delete('/api/notes/:id', async (req, res) => {
 
 
 // Folders endpoints
-app.get('/api/folders', async (req, res) => {
+app.get('/folders', async (req, res) => {
     try {
         const result = await getFolders();
         res.json(result)
@@ -83,7 +83,7 @@ app.get('/api/folders', async (req, res) => {
     }
 })
 
-app.post('/api/folders', async (req, res) => {
+app.post('/folders', async (req, res) => {
     const { name } = req.body;
     try {
         const newFolder = await addFolder(name);

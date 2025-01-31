@@ -45,7 +45,7 @@ export default {
     methods: {
         async fetchFolders() {
             try {
-                const response = await axios.get('http://localhost:3000/api/folders');
+                const response = await axios.get('http://localhost:3000/folders');
                 console.log('Received folders:', response.data);
                 this.folders = response.data;
             } catch (err) {

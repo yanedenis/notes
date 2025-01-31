@@ -40,7 +40,6 @@ const deleteNote = async (id) => {
     }
 }
 
-// Function for getting folders
 const getFolders = async () => {
     try {
         const res = await pool.query('SELECT * FROM folders');
@@ -51,7 +50,6 @@ const getFolders = async () => {
     }
 };
 
-// Function for adding folder
 const addFolder = async (name) => {
     try {
         const res = await pool.query(`INSERT INTO folders(name) VALUES (${name}) RETURNING *`)

@@ -41,13 +41,13 @@ export default {
                     window.location.reload();
                     return;
                 } else if (this.activeNoteCopy.id === undefined) {
-                    const response = await axios.post('http://localhost:3000/api/notes', {
+                    const response = await axios.post('http://localhost:3000/notes', {
                         title: this.activeNoteCopy.title || '',
                         text: this.activeNoteCopy.text || '',
                     });
                     console.log("Note created successfully", response.data);
                 } else {
-                    const response = await axios.put('http://localhost:3000/api/notes', {
+                    const response = await axios.put('http://localhost:3000/notes', {
                         id: this.activeNoteCopy.id,
                         title: this.activeNoteCopy.title,
                         text: this.activeNoteCopy.text,
@@ -62,7 +62,7 @@ export default {
         },
         async deleteNote() {
             try {
-                const response = await axios.delete(`http://localhost:3000/api/notes/${this.activeNoteCopy.id}`);
+                const response = await axios.delete(`http://localhost:3000/notes/${this.activeNoteCopy.id}`);
                 console.log("Note deleted", response.data);
                 this.closeNote();
                 window.location.reload();

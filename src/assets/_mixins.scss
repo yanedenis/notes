@@ -1,3 +1,9 @@
-@mixin backround_white_percentage($percent) {
-    background-color: color-mix(in oklab, var(--background), white $percent)
+@mixin background_white_percentage($percent) {
+    background-color: color-mix(in oklab, var(--background), white $percent);
+}
+
+@mixin transparent_noBorder_noOutline {
+    background: transparent;
+    border: none;
+    outline: none;
 }

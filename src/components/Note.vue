@@ -1,18 +1,3 @@
-<template>
-    <div className="note">
-        <div className="note__navigations">
-            <button @click="handleCloseNote" class="note__close-button"><i class='bx bx-chevron-left'></i></button>
-            <button @click="deleteNote()" class="note__delete-button"><i class='bx bxs-trash'></i></button>
-        </div>
-        <div className="note__header">
-            <input className="note__title" placeholder="Title" v-model="this.activeNoteCopy.title" />
-            <h3 className="note__date">{{ this.activeNoteCopy.date }}</h3>
-        </div>
-        <textarea class="note__content" v-model="this.activeNoteCopy.text" placeholder="Start typing...">
-            {{ this.activeNoteCopy.text }}
-        </textarea>
-    </div>
-</template>
 <script>
 import axios from 'axios';
 import _ from 'lodash';
@@ -81,17 +66,27 @@ export default {
     },
 }
 </script>
+
+<template>
+    <div className="note">
+        <div className="note__navigations">
+            <button @click="handleCloseNote" class="note__close-button"><i class='bx bx-chevron-left'></i></button>
+            <button @click="deleteNote()" class="note__delete-button"><i class='bx bxs-trash'></i></button>
+        </div>
+        <div className="note__header">
+            <input className="note__title" placeholder="Title" v-model="this.activeNoteCopy.title" />
+            <h3 className="note__date">{{ this.activeNoteCopy.date }}</h3>
+        </div>
+        <textarea class="note__content" v-model="this.activeNoteCopy.text" placeholder="Start typing...">
+            {{ this.activeNoteCopy.text }}
+        </textarea>
+    </div>
+</template>
+
 <style scoped lang="scss">
-$background_10percent: color-mix(in oklab, var(--background), white 10%);
-
-@mixin transparent_noBorder_noOutline {
-    background: transparent;
-    border: none;
-    outline: none;
-}
-
 .note {
-    background-color: $background_10percent;
+    @include background_white_percentage(10%);
+
     border-radius: 12px;
     width: 80vw;
     padding: 16px;
@@ -101,7 +96,7 @@ $background_10percent: color-mix(in oklab, var(--background), white 10%);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 2em;
+        margin-bottom: 2rem;
         position: relative;
 
         &::after {

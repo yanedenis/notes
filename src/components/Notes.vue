@@ -1,9 +1,9 @@
 <template>
     <section>
-        <div v-for="(note) in notes" :key="note.id" className="note" @click="openNote(note.id)">
-            <h2 className="note__title" v-if="(note.title)">{{ note.title }}</h2>
+        <div v-for="(note) in notes" :key="note.id" class="note" @click="openNote(note.id)">
+            <h2 className="note__title" v-show="(note.title)">{{ note.title }}</h2>
             <p className="note__text" :class="{ 'title': !note.title }">{{ truncateText(note.text, 300) }}</p>
-            <h4 className="note__date">{{ note.date }}</h4>
+            <h4 class="note__date">{{ note.date }}</h4>
         </div>
         <h1 v-show="(!notes)" class="empty-notif">Add notes</h1>
     </section>
@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .empty-notif {
     text-align: center;
 }
@@ -40,12 +40,13 @@ export default {
 }
 
 section {
+    @include background_white_percentage(6%);
+
     display: grid;
     /* grid-template-columns: repeat(auto-fill, 200px); */
     align-content: start;
     margin-top: 1.5em;
     gap: 10px;
-    background-color: color-mix(in oklab, var(--background), white 6%);
     padding: 12px;
     height: 73dvh;
     border-radius: 12px;
@@ -53,7 +54,8 @@ section {
 }
 
 .note {
-    background-color: color-mix(in oklab, var(--background), white 20%);
+    @include background_white_percentage(20%);
+
     padding: 8px;
     height: fit-content;
     border-radius: 4px;
@@ -74,21 +76,5 @@ p {
 .note__date {
     text-align: end;
     margin-top: 8px;
-
-}
-
-textarea {
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    text-align: justify;
-}
-
-.color label {
-    margin-right: 4px;
-}
-
-.color option {
-    padding: 2px;
 }
 </style>

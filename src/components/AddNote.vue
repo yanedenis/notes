@@ -38,7 +38,6 @@ button {
     display: flex;
     font-size: 18px;
     gap: 6px;
-    margin-bottom: 12px;
     cursor: pointer;
 }
 </style>

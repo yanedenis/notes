@@ -56,10 +56,10 @@ export default {
 <template>
     <main>
         <div class="menu" v-if="(!activeNote)">
-            <div className="menu__side-bar">
+            <aside className="menu__side-bar">
                 <AddNote :createNote />
                 <Folders :notes :openNote :truncateText />
-            </div>
+            </aside>
             <div className="menu__content">
                 <SearchBar :searchNote />
                 <Notes :notes :openNote :searchText :truncateText />
@@ -70,18 +70,20 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@use '~/assets/mixins' as m;
-
 .menu {
-    @include m.backround_white_percentage(10);
+    @include background_white_percentage(10%); // Use the correct mixin name
 
     display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 2vw;
-    overflow: hidden;
-    padding: 16px;
-    border-radius: 12px;
-    width: 80vw;
-    max-width: 90vw;
+    grid-template-columns: 12vw 1fr;
+    gap: 2dvh;
+    // overflow: hidden;
+    padding: max(1.2%, 14px);
+    border-radius: 20px;
+    width: 85vw;
+    height: 90dvh;
+}
+
+.menu__side-bar {
+    height: 100%;
 }
 </style>

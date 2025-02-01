@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .search-bar {
     position: relative;
 }
@@ -29,7 +29,8 @@ i {
 }
 
 input {
-    background-color: color-mix(in oklab, var(--background), white 7%);
+    @include background_white_percentage(7%);
+
     outline: 0;
     border: 0;
     border-bottom: 2px var(--text) solid;

@@ -29,7 +29,7 @@ i {
 }
 
 input {
-    @include background_white_percentage(7%);
+    @include background_whiteness(7%);
 
     outline: 0;
     border: 0;

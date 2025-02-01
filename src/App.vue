@@ -71,7 +71,7 @@ export default {
 
 <style scoped lang="scss">
 .menu {
-    @include background_white_percentage(10%); // Use the correct mixin name
+    @include background_whiteness(10%);
 
     display: grid;
     grid-template-columns: 12vw 1fr;

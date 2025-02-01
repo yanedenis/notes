@@ -1,4 +1,4 @@
-@mixin background_white_percentage($percent) {
+@mixin background_whiteness($percent) {
     background-color: color-mix(in oklab, var(--background), white $percent);
 }
 

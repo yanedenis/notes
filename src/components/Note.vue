@@ -85,7 +85,7 @@ export default {
 
 <style scoped lang="scss">
 .note {
-    @include background_white_percentage(10%);
+    @include background_whiteness(10%);
 
     border-radius: 12px;
     width: 80vw;

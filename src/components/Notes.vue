@@ -40,7 +40,7 @@ export default {
 }
 
 section {
-    @include background_white_percentage(6%);
+    @include background_whiteness(6%);
 
     display: grid;
     /* grid-template-columns: repeat(auto-fill, 200px); */
@@ -54,7 +54,7 @@ section {
 }
 
 .note {
-    @include background_white_percentage(20%);
+    @include background_whiteness(20%);
 
     padding: 8px;
     height: fit-content;

@@ -95,7 +95,7 @@ details {
 section {
     height: 100%;
     overflow-y: scroll;
-    @include background_white_percentage(6%);
+    @include background_whiteness(6%);
 
     & > div {
 
@@ -122,7 +122,7 @@ section {
     @extend .file;
 
     &--in-folder {
-        @include background_white_percentage(2%);
+        @include background_whiteness(2%);
 
         padding: .2rem;
         margin: .3rem 0 0 1rem;

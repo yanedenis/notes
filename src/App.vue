@@ -42,7 +42,6 @@ export default {
         async fetchNotes() {
             try {
                 const response = await axios.get('http://localhost:3000/notes');
-                console.log("Received notes: ", response.data)
                 this.notes = response.data;
             } catch(err) {
                 console.error('Error fetching notes:', err);
@@ -56,11 +55,11 @@ export default {
 <template>
     <main>
         <div class="menu" v-if="(!activeNote)">
-            <aside className="menu__side-bar">
+            <aside class="menu__side-bar">
                 <AddNote :createNote />
                 <Folders :notes :openNote :truncateText />
             </aside>
-            <div className="menu__content">
+            <div class="menu__content">
                 <SearchBar :searchNote />
                 <Notes :notes :openNote :searchText :truncateText />
             </div>
@@ -71,19 +70,17 @@ export default {
 
 <style scoped lang="scss">
 .menu {
-    @include background_whiteness(10%);
-
     display: grid;
-    grid-template-columns: 12vw 1fr;
-    gap: 2dvh;
+    grid-template-columns: 15vw 1fr;
+    gap: 2vw;
     // overflow: hidden;
-    padding: max(1.2%, 14px);
+    padding: max(2vw, 14px);
     border-radius: 20px;
-    width: 85vw;
-    height: 90dvh;
+    width: 100vw;
+    height: 100dvh;
 }
 
 .menu__side-bar {
-    height: 100%;
+    @include background_whiteness(5);
 }
 </style>

@@ -43,12 +43,12 @@ section {
     @include background_whiteness(6%);
 
     display: grid;
-    /* grid-template-columns: repeat(auto-fill, 200px); */
+    // grid-template-columns: repeat(auto-fill, 200px);
     align-content: start;
     margin-top: 1.5em;
     gap: 10px;
     padding: 12px;
-    height: 73dvh;
+    height: 100%;
     border-radius: 12px;
     overflow-y: scroll;
 }

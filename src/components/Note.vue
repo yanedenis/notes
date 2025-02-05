@@ -85,8 +85,6 @@ export default {
 
 <style scoped lang="scss">
 .note {
-    @include background_whiteness(10%);
-
     border-radius: 12px;
     width: 80vw;
     padding: 16px;
@@ -114,9 +112,13 @@ export default {
     &__title {
         @include transparent_noBorder_noOutline();
 
-        font-size: 1.6em;
+        font-size: 1.6rem;
         font-weight: bold;
-        width: 100%;
+        // width: 100%;
+    }
+
+    &__date {
+        width: max-content;
     }
 
     &__navigations {

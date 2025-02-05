@@ -19,7 +19,6 @@ export default {
         async fetchFolders() {
             try {
                 const response = await axios.get('http://localhost:3000/folders');
-                console.log('Received folders:', response.data);
                 this.folders = response.data;
             } catch (err) {
                 console.error('Error fetching folders:', err);
@@ -70,20 +69,18 @@ export default {
 
 <style scoped lang="scss">
 h1 {
-    font-size: 2em;
-    margin-top: 20px;
+    font-size: min(2rem, 2.5vw);
     margin-bottom: 8px;
 }
 
 h4, .file i {
-    font-size: 1.3rem;
+    font-size: min(1.3rem, 1.5vw);
 }
 
 summary {
-    font-size: 1.4rem;
+    font-size: min(1.4rem, 1.6vw);
     font-weight: bold;
     width: 100%;
-    // list-style-position: outside;
 }
 
 details {
@@ -95,7 +92,6 @@ details {
 section {
     height: 100%;
     overflow-y: scroll;
-    @include background_whiteness(6%);
 
     & > div {
 

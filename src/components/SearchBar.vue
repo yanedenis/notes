@@ -35,7 +35,7 @@ input {
     border: 0;
     border-bottom: 2px var(--text) solid;
     padding: 4px 6px;
-    font-size: 24px;
+    font-size: 1.2rem;
     padding-left: 2rem;
 }
 

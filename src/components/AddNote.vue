@@ -1,7 +1,6 @@
 <template>
 <button @click="createNote(note)">
     <i class='bx bx-plus'></i>
-    <p>Create note</p>
 </button>
 </template>
 
@@ -28,16 +27,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 button {
+    position: fixed;
+    right: 1vw;
+    bottom: 3vh;
     background-color: var(--secondary);
     border: 0;
-    padding: 8px;
-    width: 100%;
-    border-radius: 12px;
-    display: flex;
-    font-size: 18px;
-    gap: 6px;
+    padding: min(8px, 5%);
+    border-radius: 50%;
     cursor: pointer;
+
+    i {
+        width: min-content;
+        height: min-content;
+        font-weight: bold;
+        font-size: px_to_rem(24);
+    }
 }
 </style>

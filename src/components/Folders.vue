@@ -1,28 +1,8 @@
 <script>
-import axios from 'axios';
-
 export default {
-    data() {
-        return {
-            folders: []
-        }
-    },
-    created() {
-        this.fetchFolders();
-    },
     computed: {
         notesNotInFolder() {
             return this.notes.filter(note => note.folder_id === null)
-        },
-    },
-    methods: {
-        async fetchFolders() {
-            try {
-                const response = await axios.get('http://localhost:3000/folders');
-                this.folders = response.data;
-            } catch (err) {
-                console.error('Error fetching folders:', err);
-            }
         },
     },
     props: {
@@ -36,6 +16,10 @@ export default {
         },
         truncateText: {
             type: Function,
+            required: true,
+        },
+        folders: {
+            type: Array,
             required: true,
         }
     },
@@ -51,7 +35,6 @@ export default {
                     <summary>{{ folder.name }}</summary>
                     <div className="folders__file folders__file--in-folder" v-for="(note) in notes"
                         v-show="note.folder_id === folder.id" @click="openNote(note.id)">
-                        <i class='bx bxs-note'></i>
                         <h4 v-if="(note.title)">{{ note.title }}</h4>
                         <h4 v-else>{{ truncateText(note.text, 25) }}</h4>
                     </div>
@@ -59,7 +42,6 @@ export default {
             </div>
         </div>
         <div class="file" v-for="(note) in notesNotInFolder" @click="openNote(note.id)">
-            <i class='bx bxs-note'></i>
             <h4 v-if="(note.title)">{{ note.title }}</h4>
             <h4 v-else>{{ truncateText(note.text, 25) }}</h4>
         </div>
@@ -69,11 +51,11 @@ export default {
 
 <style scoped lang="scss">
 h1 {
-    font-size: min(2rem, 2.5vw);
+    font-size: min(3vw, 2rem);
     margin-bottom: 8px;
 }
 
-h4, .file i {
+h4 {
     font-size: min(1.3rem, 1.5vw);
 }
 
@@ -94,6 +76,9 @@ section {
     overflow-y: scroll;
 
     & > div {
+        &:hover {
+            @include background_whiteness(5);
+        }
 
         overflow-x: hidden;
         padding: 6px;
@@ -118,8 +103,6 @@ section {
     @extend .file;
 
     &--in-folder {
-        @include background_whiteness(2%);
-
         padding: .2rem;
         margin: .3rem 0 0 1rem;
         font-size: 16px;

@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @mixin background_whiteness($percent) {
     background-color: color-mix(in oklab, var(--background), white $percent);
 }
@@ -8,7 +10,7 @@
     outline: none;
 }
 
-@function px_to_rem($px) {
-    $rem: ($px / 16) + rem;
+@function toRem($px) {
+    $rem: math.div($px, 16) + rem;
     @return $rem;
 }

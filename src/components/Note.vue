@@ -5,7 +5,7 @@ import _ from 'lodash';
 export default {
     data() {
         return {
-            activeNoteCopy: { ...this.activeNote }
+            activeNoteCopy: _.cloneDeep(this.activeNote)
         }
     },
     props: {
@@ -17,40 +17,60 @@ export default {
             type: Object,
             required: true,
         },
+        folders: {
+            type: Array,
+            required: true,
+        },
+        updateNotesList: {
+            type: Function,
+            required: true,
+        },
+        updateNotesListAfterDelete: {
+            type: Function,
+            required: true,
+        }
     },
     methods: {
         async handleCloseNote() {
             try {
                 if (!this.activeNoteCopy.title && !this.activeNoteCopy.text) {
                     this.closeNote();
-                    window.location.reload();
                     return;
-                } else if (this.activeNoteCopy.id === undefined) {
-                    const response = await axios.post('http://localhost:3000/notes', {
-                        title: this.activeNoteCopy.title || '',
-                        text: this.activeNoteCopy.text || '',
-                    });
+                };
+
+                const noteData = {
+                    title: this.activeNoteCopy.title || '',
+                    text: this.activeNoteCopy.text || '',
+                    folder_id: this.activeNoteCopy.folder_id ?? null,
+                };
+
+                console.log("Updating note with:", noteData);
+
+                let response;
+                if (this.activeNoteCopy.id === undefined) {
+                    response = await axios.post('http://localhost:3000/notes', noteData);
                     console.log("Note created successfully", response.data);
                 } else {
-                    const response = await axios.put('http://localhost:3000/notes', {
+                    response = await axios.put('http://localhost:3000/notes', {
                         id: this.activeNoteCopy.id,
-                        title: this.activeNoteCopy.title,
-                        text: this.activeNoteCopy.text,
+                        ...noteData, // Spread object to keep it clean
                     });
-                    console.log('Note saved successfully:', response.data);
+                    console.log("Note saved successfully", response.data);
                 }
+
+                // Update the UI dynamically
+                this.updateNotesList(response.data);
+                this.closeNote();
             } catch (err) {
                 console.error('Error saving note:', err.response || err);
             }
-            this.closeNote();
-            window.location.reload();
         },
         async deleteNote() {
             try {
                 const response = await axios.delete(`http://localhost:3000/notes/${this.activeNoteCopy.id}`);
                 console.log("Note deleted", response.data);
                 this.closeNote();
-                window.location.reload();
+                this.updateNotesListAfterDelete(this.activeNoteCopy.id)
             } catch (err) {
                 console.error('Error deleting note', err.response || err);
             }
@@ -60,7 +80,12 @@ export default {
         activeNote: {
             immediate: true,
             handler(newVal) {
-                this.activeNoteCopy = { ...newVal };
+                this.activeNoteCopy = _.cloneDeep(newVal); // Ensures deep reactivity
+            }
+        },
+        "activeNoteCopy.folder_id": function (newVal) {
+            if (newVal === "null") {
+                this.activeNoteCopy.folder_id = null;
             }
         }
     },
@@ -70,7 +95,11 @@ export default {
 <template>
     <div className="note">
         <div className="note__navigations">
-            <button @click="handleCloseNote" class="note__close-button"><i class='bx bx-chevron-left'></i></button>
+            <button @click="handleCloseNote()" class="note__close-button"><i class='bx bx-chevron-left'></i></button>
+            <select name="folders" id="folders" class="note__folder-selector" v-model="activeNoteCopy.folder_id">
+                <option :value="null">None</option>
+                <option :value="folder.id" v-for="folder in folders" :key="folder.id">{{ folder.name }}</option>
+            </select>
             <button @click="deleteNote()" class="note__delete-button"><i class='bx bxs-trash'></i></button>
         </div>
         <div className="note__header">
@@ -85,10 +114,9 @@ export default {
 
 <style scoped lang="scss">
 .note {
-    border-radius: 12px;
-    width: 80vw;
-    padding: 16px;
-    height: 80dvh;
+    width: 100vw;
+    padding: max(2vw, 14px);
+    height: 100dvh;
 
     &__header {
         display: flex;
@@ -100,7 +128,7 @@ export default {
         &::after {
             content: '';
             width: 100%;
-            height: 2px;
+            height: 4px;
             background-color: var(--text);
             opacity: 40%;
             position: absolute;
@@ -109,16 +137,13 @@ export default {
         }
     }
 
-    &__title {
+    &__title,
+    &__date {
         @include transparent_noBorder_noOutline();
 
-        font-size: 1.6rem;
+        font-size: max(2vw, toRem(24));
         font-weight: bold;
         // width: 100%;
-    }
-
-    &__date {
-        width: max-content;
     }
 
     &__navigations {
@@ -126,12 +151,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-        input {
-            @include transparent_noBorder_noOutline();
-
-            width: 20px;
-        }
+        padding: max(.8vw, 4px);
     }
 
     &__close-button {
@@ -140,7 +160,7 @@ export default {
         cursor: pointer;
 
         i {
-            font-size: 3.5rem;
+            font-size: max(3vw, 3rem);
         }
     }
 
@@ -150,18 +170,24 @@ export default {
         cursor: pointer;
 
         i {
-            font-size: 2rem;
+            font-size: max(2vw, 2rem);
         }
     }
 
     &__content {
         @include transparent_noBorder_noOutline();
 
-        font-size: 1.3em;
+        font-size: max(1.5vw, toRem(16));
         width: 100%;
         height: 100%;
         overflow: hidden;
         resize: none;
+    }
+
+    &__folder-selector {
+        @include transparent_noBorder_noOutline();
+
+        font-size: max(1.2vw, toRem(16));
     }
 }
 </style>

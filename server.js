@@ -34,7 +34,7 @@ app.get('/notes', async (req, res) => {
 
 app.post('/notes', async (req, res) => {
     const { title, text, folder_id } = req.body;
-    console.log("\nNote for post", req.body)
+    console.log("\n🌐 SERVER|Note for post", req.body)
     try {
         const newNote = await addNote(title, text, folder_id);
         res.status(201).json(newNote);
@@ -45,13 +45,10 @@ app.post('/notes', async (req, res) => {
 });
 
 app.put('/notes', async (req, res) => {
-    const { id, title, text } = req.body;
-    console.log('\nNote for put:', req.body);
-    if (!title && !text) {
-        return res.status(400).send('Missing required fields');
-    }
+    const { id, title, text, folder_id } = req.body;
+    console.log('\n🌐 SERVER|Note for put:', req.body);
     try {
-        const updatedNote = await updateNote(id, title, text);
+        const updatedNote = await updateNote(id, title, text, folder_id);
         res.status(201).json(updatedNote);
     } catch (err) {
         res.status(500).send("ENDPOINT: Can't save note");
@@ -61,7 +58,7 @@ app.put('/notes', async (req, res) => {
 
 app.delete('/notes/:id', async (req, res) => {
     const { id } = req.params;
-    console.log('\nDeleting note:', id);
+    console.log('\n🌐 SERVER|Deleting note:', id);
     try {
         const deletedNote = await deleteNote(id);
         res.status(200).json(deletedNote);
@@ -85,6 +82,7 @@ app.get('/folders', async (req, res) => {
 
 app.post('/folders', async (req, res) => {
     const { name } = req.body;
+    console.log('\n🌐 SERVER|Created folder: ', name)
     try {
         const newFolder = await addFolder(name);
         res.status(201).json(newFolder);

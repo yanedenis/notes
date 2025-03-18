@@ -25,7 +25,7 @@ export default {
             type: Function,
             required: true,
         },
-        updateNotesListAfterDelete: {
+        handleNoteDelete: {
             type: Function,
             required: true,
         }
@@ -34,7 +34,6 @@ export default {
         async handleCloseNote() {
             try {
                 if (!this.activeNoteCopy.title && !this.activeNoteCopy.text) {
-                    this.closeNote();
                     return;
                 };
 
@@ -44,25 +43,22 @@ export default {
                     folder_id: this.activeNoteCopy.folder_id ?? null,
                 };
 
-                console.log("Updating note with:", noteData);
-
                 let response;
                 if (this.activeNoteCopy.id === undefined) {
                     response = await axios.post('http://localhost:3000/notes', noteData);
-                    console.log("Note created successfully", response.data);
                 } else {
                     response = await axios.put('http://localhost:3000/notes', {
                         id: this.activeNoteCopy.id,
                         ...noteData, // Spread object to keep it clean
                     });
-                    console.log("Note saved successfully", response.data);
                 }
 
                 // Update the UI dynamically
                 this.updateNotesList(response.data);
-                this.closeNote();
             } catch (err) {
                 console.error('Error saving note:', err.response || err);
+            } finally {
+                this.closeNote();
             }
         },
         async deleteNote() {
@@ -70,7 +66,7 @@ export default {
                 const response = await axios.delete(`http://localhost:3000/notes/${this.activeNoteCopy.id}`);
                 console.log("Note deleted", response.data);
                 this.closeNote();
-                this.updateNotesListAfterDelete(this.activeNoteCopy.id)
+                this.handleNoteDelete(this.activeNoteCopy.id)
             } catch (err) {
                 console.error('Error deleting note', err.response || err);
             }

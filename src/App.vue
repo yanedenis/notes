@@ -1,6 +1,6 @@
 <script>
 import SearchBar from './components/SearchBar.vue';
-import AddNote from './components/AddNote.vue';
+import CreateBtn from './components/CreateBtn.vue';
 import Folders from './components/Folders.vue';
 import Notes from './components/Notes.vue';
 import Note from './components/Note.vue';
@@ -8,11 +8,12 @@ import Note from './components/Note.vue';
 import axios from 'axios';
 
 export default {
-    components: { SearchBar, AddNote, Folders, Notes, Note },
+    components: { SearchBar, CreateBtn, Folders, Notes, Note },
 
     data() {
         return {
             notes: [],
+            originalNotes: [], // Store the original list of notes
             folders: [],
             activeNote: null,
         }
@@ -24,20 +25,20 @@ export default {
         closeNote() {
             this.activeNote = null;
         },
-        searchNote(title) {
-            title = title?.toLowerCase()
-
-            if (!title) {
-                console.log(this.notes)
-                return this.notes
-            } else {
-                console.log(this.notes.filter(note => note.title.toLowerCase().includes(title)))
-                return this.notes.filter(note => note.title.toLowerCase().includes(title))
+        searchNotes(query) {
+            query = query.trim().toLowerCase();
+            if (!query) {
+                this.notes = this.originalNotes; // Reset to original notes if query is empty
+                return;
             }
+
+            this.notes = this.originalNotes.filter(note => 
+                note.title.toLowerCase().includes(query) || 
+                note.text.toLowerCase().includes(query)
+            );
         },
         openNote(index) {
-            this.activeNote = this.notes.find(note => note.id == index);
-            console.log(this.activeNote);
+            this.activeNote = this.originalNotes.find(note => note.id == index);
         },
         truncateText(value, length) {
             if (!value) return '';
@@ -53,6 +54,7 @@ export default {
                 const folders = await axios.get('http://localhost:3000/folders');
                 this.folders = folders.data;
                 this.notes = notes.data;
+                this.originalNotes = notes.data; // Store the original notes
                 this.notes.sort((a, b) => {
                     const dateA = new Date(a.date.split('.').reverse().join('-'));
                     const dateB = new Date(b.date.split('.').reverse().join('-'));
@@ -62,17 +64,20 @@ export default {
                 console.error('Error fetching data:', err);
             }
         },
-        /* Functions for updating page dynamicaly */
+        /* Functions for updating page dynamically */
         updateNotesList(updatedNote) {
             const noteIndex = this.notes.findIndex(note => note.id === updatedNote.id);
             if (noteIndex !== -1) {
                 this.notes.splice(noteIndex, 1, updatedNote); // Updating existing note
+                this.originalNotes.splice(noteIndex, 1, updatedNote); // Update original notes
             } else {
                 this.notes.push(updatedNote); // Adding new note
+                this.originalNotes.push(updatedNote); // Add to original notes
             }
         },
-        updateNotesListAfterDelete(deletedNoteId) {
+        handleNoteDelete(deletedNoteId) {
             this.notes = this.notes.filter(note => note.id !== deletedNoteId);
+            this.originalNotes = this.originalNotes.filter(note => note.id !== deletedNoteId);
         }
     },
 }
@@ -80,20 +85,20 @@ export default {
 </script>
 
 <template>
-    <main>
-        <!-- Variable activeNote allows to dynamicaly open note that was pressed -->
+    <div>
+        <!-- Variable activeNote allows to dynamically open note that was pressed -->
         <div class="menu" v-if="(!activeNote)">
             <aside class="menu__side-bar">
-                <AddNote :createNote="createNote" />
-                <Folders :notes :openNote="openNote" :truncateText="truncateText" :folders />
+                <CreateBtn :createNote="createNote" />
+                <Folders :notes="originalNotes" :openNote="openNote" :truncateText="truncateText" :folders="folders" />
             </aside>
-            <div class="menu__content">
-                <SearchBar :searchNote="searchNote" />
-                <Notes :notes :openNote="openNote" :truncateText="truncateText" :folders />
-            </div>
+            <main class="menu__content">
+                <SearchBar :searchNotes="searchNotes" />
+                <Notes :notes="notes" :openNote="openNote" :truncateText="truncateText" :folders="folders" />
+            </main>
         </div>
-        <Note v-else :activeNote :closeNote="closeNote" :folders :updateNotesList="updateNotesList" :updateNotesListAfterDelete="updateNotesListAfterDelete" />
-    </main>
+        <Note v-else :activeNote="activeNote" :closeNote="closeNote" :folders="folders" :updateNotesList="updateNotesList" :handleNoteDelete="handleNoteDelete" />
+    </div>
 </template>
 
 <style scoped lang="scss">
@@ -101,7 +106,6 @@ export default {
     display: grid;
     grid-template-columns: 15vw 1fr;
     gap: 2vw;
-    // overflow: hidden;
     padding: max(2vw, 14px);
     border-radius: 20px;
     width: 100vw;
@@ -110,5 +114,8 @@ export default {
 
 .menu__side-bar {
     @include background_whiteness(5);
+    position: sticky;
+    top: 0;
+    left: 0;
 }
 </style>

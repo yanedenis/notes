@@ -55,10 +55,9 @@ export default {
 
 section {
     display: grid;
-    // grid-template-columns: repeat(auto-fill, 200px);
     margin-top: 1.5em;
     gap: 10px;
-    height: 100%;
+    // height: 100%;
     overflow-y: scroll;
 }
 

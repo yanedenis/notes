@@ -59,6 +59,11 @@ h4 {
     font-size: min(1.3rem, 1.5vw);
 }
 
+.folders {
+    display: grid;
+    gap: 12px;
+}
+
 summary {
     font-size: min(1.4rem, 1.6vw);
     font-weight: bold;
